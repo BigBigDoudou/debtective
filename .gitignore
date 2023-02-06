@@ -1,0 +1,20 @@
+/.bundle/
+/log/*.log
+/pkg/
+/tmp/
+
+# test
+/test/dummy/log/*.log
+/test/dummy/storage/
+/test/dummy/tmp/
+/test/dummy/debtective/
+
+.byebug_history
+
+# coverage
+coverage/*
+!coverage/.keep
+
+# builds
+debtective-*.gem
+
