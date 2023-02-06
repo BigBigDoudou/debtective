@@ -1,8 +1,7 @@
 AllCops:
   NewCops: enable
   Exclude:
-    - _notes/**/*
-    - test/dummy/db/schema.rb
+    - spec/dummy/**/*
 
 Style/StringLiterals:
   Enabled: true
@@ -14,16 +13,16 @@ Style/StringLiteralsInInterpolation:
 
 Metrics/BlockLength:
   Exclude:
-    - test/**/*
+    - spec/**/*
 
 Metrics/MethodLength:
   Max: 15
   Exclude:
-    - test/**/*
+    - spec/**/*
 
 Metrics/AbcSize:
   Exclude:
-    - test/**/*
+    - spec/**/*
 
 Layout/LineLength:
   Max: 120
@@ -73,18 +72,18 @@ Style/ClassMethodsDefinitions:
 # TODO: enable when ready to document!
 # Document classes and non-namespace modules.
 Style/Documentation:
-  Enabled: true
+  Enabled: false
   Exclude:
-    - 'test/**/*'
+    - 'spec/**/*'
     - 'db/migrate/*'
 
 # TODO: enable when ready to document!
 # Checks for missing documentation comment for public methods.
 Style/DocumentationMethod:
-  Enabled: true
+  Enabled: false
   RequireForNonPublicMethods: true
   Exclude:
-    - 'test/**/*'
+    - 'spec/**/*'
     - 'db/migrate/*'
 
 # Avoid multi-line method signatures.

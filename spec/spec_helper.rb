@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 require "simplecov"
-SimpleCov.start do
-  add_filter "/config/"
-  add_filter "/test/"
+SimpleCov.start
+
+require "pry"
+require "debtective"
+
+Debtective.configure do |config|
+  config.paths = ["spec/dummy/app/**/*"]
 end
