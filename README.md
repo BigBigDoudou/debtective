@@ -1,14 +1,16 @@
 # Debtective
 
-Help find out todos in your application.
+Find todos in your application and control the debt!
 
 ## Usage
 
-Run the task:
+Run the task with:
 
-- `bundle exec rake debtective:todo_list`
+```bash
+bundle exec rake debtective:todo_list
+```
 
-More tasks to come!
+It outputs the todos with the concerned lines and the total of todos and lines.
 
 ## Installation
 
