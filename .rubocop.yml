@@ -27,9 +27,6 @@ Metrics/AbcSize:
 Layout/LineLength:
   Max: 120
 
-Style/WordArray:
-  Enabled: false
-
 Layout/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
 
@@ -69,18 +66,16 @@ Style/ClassMethodsDefinitions:
   Enabled: true
   EnforcedStyle: self_class
 
-# TODO: enable when ready to document!
 # Document classes and non-namespace modules.
 Style/Documentation:
-  Enabled: false
+  Enabled: true
   Exclude:
     - 'spec/**/*'
     - 'db/migrate/*'
 
-# TODO: enable when ready to document!
 # Checks for missing documentation comment for public methods.
 Style/DocumentationMethod:
-  Enabled: false
+  Enabled: true
   RequireForNonPublicMethods: true
   Exclude:
     - 'spec/**/*'

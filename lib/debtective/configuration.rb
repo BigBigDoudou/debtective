@@ -8,7 +8,7 @@ module Debtective
     # Initializes the configuration
     # @return [Debtective::Configuration]
     def initialize
-      @paths = []
+      @paths = ["app/**/*.rb"]
     end
   end
 end

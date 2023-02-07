@@ -10,6 +10,11 @@ class User < ApplicationRecord
   def send_email
     x + y
     # TODO: improve performance
-    User.all
+    if true
+      do_this
+      do_that
+    else
+      do_something_else
+    end
   end
 end

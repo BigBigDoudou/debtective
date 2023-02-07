@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-require "bundler/setup"
-
-APP_RAKEFILE = File.expand_path("test/dummy/Rakefile", __dir__)
-
 require "bundler/gem_tasks"
+require "rspec/core/rake_task"
 
-require "rake/testtask"
+RSpec::Core::RakeTask.new(:spec)
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << "test"
-  t.pattern = "test/**/*_test.rb"
-  t.verbose = false
-end
+require "rubocop/rake_task"
 
-task default: :test
+RuboCop::RakeTask.new
+
+task default: %i[spec rubocop]
