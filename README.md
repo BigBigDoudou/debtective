@@ -1,14 +1,12 @@
 # Debtective
 
-Help find out debt in your application.
+Help find out todos in your application.
 
 ## Usage
 
-Run dedicated tasks:
+Run the task:
 
-- `bundle exec rake debtective:unused`: list unused helpers, constants and partials.
-- `bundle exec rake debtective:absolute_paths:partials`: find absolute paths for partials.
-- - `bundle exec rake debtective:absolute_paths:locales`: find absolute paths for locales.
+- `bundle exec rake debtective:todo_list`
 
 More tasks to come!
 
