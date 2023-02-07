@@ -40,7 +40,7 @@ module Debtective
     # ends of the statement
     # @return [Integer]
     def call
-      @lines[1..].index { end_of_statement?(_1) } || 0
+      @lines[1..]&.index { end_of_statement?(_1) } || 0
     end
 
     private

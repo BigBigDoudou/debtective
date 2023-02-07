@@ -2,6 +2,7 @@
 
 require "debtective/version"
 require "debtective/configuration"
+require "debtective/railtie" if defined?(Rails)
 
 # Entrypoint
 module Debtective

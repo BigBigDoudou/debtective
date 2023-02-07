@@ -7,6 +7,9 @@ module Debtective
   class FileTodos
     Result = Struct.new(:pathname, :boundaries)
 
+    BEFORE_LINE_TODO_REGEX = /^\s*#\stodo:\s/i
+    INLINE_TODO_REGEX = /\s*#\stodo:\s/i
+
     # @param pathname [Pathname]
     def initialize(pathname)
       @pathname = pathname
@@ -15,9 +18,12 @@ module Debtective
     # @return [Array<FileTodos::Result>]
     def call
       lines.filter_map.with_index do |line, index|
-        next unless line.match?(/^\s*#\sTODO:\s/)
-
-        Result.new(@pathname, boundaries(index))
+        case line
+        when BEFORE_LINE_TODO_REGEX
+          Result.new(@pathname, boundaries(index))
+        when INLINE_TODO_REGEX
+          Result.new(@pathname, index..index)
+        end
       end
     end
 

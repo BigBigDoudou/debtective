@@ -3,8 +3,10 @@
 require "debtective/file_todos"
 
 module Debtective
-  # returns information about the debt
+  # Find and investigate todo comments
   class TodoList
+    DEFAULT_PATHS = ["./**/*"].freeze
+
     REPORTS = %i[
       combined_count
       extended_count
@@ -22,7 +24,7 @@ module Debtective
 
     # @return [Array<String>]
     def paths
-      Debtective.configuration&.paths || []
+      Debtective.configuration&.paths || DEFAULT_PATHS
     end
 
     # @return [Array<Pathname>] only path to ruby files
