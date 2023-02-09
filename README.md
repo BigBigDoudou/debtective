@@ -1,6 +1,6 @@
 # Debtective
 
-Find todos in your application and control the debt!
+Find todos in your codebase so you don't forget to pay off your debts! 💰
 
 ## Usage
 
@@ -10,7 +10,7 @@ Run the task with:
 bundle exec rake debtective:todo_list
 ```
 
-It outputs the todos with the concerned lines and the total of todos and lines.
+It outputs the todos positions with the concerned lines of code and some counts.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 group :development do
-  gem 'debtective'
+  gem "debtective"
 end
 ```
 
@@ -32,6 +32,16 @@ Or install it yourself as:
 
 ```bash
 $ gem install debtective
+```
+
+Configure the paths that should be analyzed (all by default):
+
+```ruby
+# config/initializers/debtective.rb
+
+Debtective.configure do |config|
+  config.paths = ["app/**/*", "lib/**/*"]
+end
 ```
 
 ## Contributing

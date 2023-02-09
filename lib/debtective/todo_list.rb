@@ -27,7 +27,7 @@ module Debtective
       Debtective.configuration&.paths || DEFAULT_PATHS
     end
 
-    # @return [Array<Pathname>] only path to ruby files
+    # @return [Array<Pathname>] only pathes to ruby files
     def ruby_pathnames
       paths
         .flat_map { File.extname(_1) == "" ? Dir[_1] : [_1] }
