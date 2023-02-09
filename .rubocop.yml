@@ -13,6 +13,7 @@ Style/StringLiteralsInInterpolation:
 
 Metrics/BlockLength:
   Exclude:
+    - lib/tasks/debtective/**/*.rake
     - spec/**/*
 
 Metrics/MethodLength:
