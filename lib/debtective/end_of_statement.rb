@@ -1,69 +1,81 @@
 # frozen_string_literal: true
 
+require "parser/current"
+
 module Debtective
-  # Find end of a block given its first line and the next lines
+  # Find the index of the line ending a statement
   #
-  # With a class, a def, an if statement... or any "block statement"
-  #
-  # 0   def foo
-  # 1     do_this <--
-  # 2   end
-  # 3 end
-  #
-  # The end of the block is the last line before the `end` keyword (index 1)
-  #
-  # With a carriage return
-  #
-  # 0   User
-  # 1     .where(draft: true)
-  # 2     .preload(:tasks)    <--
-  # 3 end
-  #
-  # The end of the block is the last line of the statement (index 2)
-  #
-  # With a single line (no block)
-  #
-  # 0   do_this <--
-  # 1   do_that
-  # 2 end
-  #
-  # Then the end is the first line (index 0)
+  # EndOfStatement.new(
+  #   [
+  #     "class User",
+  #     "  def example",
+  #     "    x + y",
+  #     "  end"
+  #     "end"
+  #   ],
+  #   1
+  # ).call
+  # => 3
   #
   class EndOfStatement
-    NON_ENDING_KEYWORDS_REGEX = /^(\s*)(else$|elsif\s|(rescue(\s|$))|ensure)/
-
     # @param lines [Array<String>] lines of code
-    def initialize(lines)
+    # @param index [Integer] index of the statement first line
+    def initialize(lines, first_line_index)
       @lines = lines
+      @first_line_index = first_line_index
     end
 
-    # ends of the statement
+    # index of the line ending the statement
     # @return [Integer]
     def call
-      @lines[1..]&.index { end_of_statement?(_1) } || 0
+      suppress_stderr do
+        last_line_index || @first_line_index
+      end
     end
 
     private
 
-    # indent (number of spaces) of the first line | for memoization
-    # @return [Integer]
-    def first_line_indent
-      @first_line_indent ||= indent(@lines[0])
+    # index of the line ending the statement
+    # @return[Integer, void]
+    # @note it is possible that no line ends the statement
+    # especially if first line is not the start of a statement
+    def last_line_index
+      @lines.index.with_index do |_line, index|
+        index > @first_line_index &&
+          statement?(index) &&
+          !chained?(index)
+      end
     end
 
-    # return true if the line is the end of the statement
-    # @return [Boolean]
-    def end_of_statement?(line)
-      return false if line.match?(NON_ENDING_KEYWORDS_REGEX)
-
-      indent(line) <= first_line_indent
+    # check if the code from first index to given index is a statement
+    # e.i. can be parsed by a ruby parser (using whitequark/parser)
+    # @param index [Integer]
+    # @return boolean
+    def statement?(index)
+      code = @lines[@first_line_index..index].join("\n")
+      ::Parser::CurrentRuby.parse(code)
+      true
+    rescue Parser::SyntaxError
+      false
     end
 
-    # returns the indent (number of spaces) of the line
-    # @param line [String]
-    # @return [Integer]
-    def indent(line)
-      line.match(/^(\s*).*$/)[1].length
+    # check if current line is chained
+    # e.i. next line start with a .
+    # @param index [Integer]
+    # @return boolean
+    def chained?(index)
+      @lines[index + 1]&.match?(/^(\s*)\./)
+    end
+
+    # silence the $stderr
+    # to avoid logs from the parser
+    # @return void
+    def suppress_stderr
+      original_stderr = $stderr.clone
+      $stderr.reopen(File.new("/dev/null", "w"))
+      yield
+    ensure
+      $stderr.reopen(original_stderr)
     end
   end
 end

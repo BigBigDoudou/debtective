@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   def index
     authorize!(current_user)
     # TODO: preload user tasks
+    # to avoid n+1
     User.all
   end
 end

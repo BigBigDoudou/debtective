@@ -20,10 +20,10 @@ RSpec.describe Debtective::TodoList do
           todo_list.todos.map { [_1.pathname.to_s, _1.boundaries] }
         ).to match_array(
           [
-            ["spec/dummy/app/models/user.rb", 4..19],
-            ["spec/dummy/app/models/user.rb", 6..7],
-            ["spec/dummy/app/models/user.rb", 13..17],
-            ["spec/dummy/app/controllers/users_controller.rb", 5..8],
+            ["spec/dummy/app/models/user.rb", 3..20],
+            ["spec/dummy/app/models/user.rb", 6..8],
+            ["spec/dummy/app/models/user.rb", 13..18],
+            ["spec/dummy/app/controllers/users_controller.rb", 4..9],
             ["spec/dummy/app/controllers/users_controller.rb", 8..8]
           ]
         )
@@ -32,13 +32,13 @@ RSpec.describe Debtective::TodoList do
 
     describe "extended_count" do
       it "returns the sum of todo blocks" do
-        expect(todo_list.extended_count).to eq 28
+        expect(todo_list.extended_count).to eq 34
       end
     end
 
     describe "combined_count" do
       it "returns the sum of todo blocks excluding overlaps" do
-        expect(todo_list.combined_count).to eq 20
+        expect(todo_list.combined_count).to eq 24
       end
     end
   end

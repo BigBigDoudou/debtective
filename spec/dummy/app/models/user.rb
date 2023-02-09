@@ -3,6 +3,7 @@
 # TODO: use an STI
 class User < ApplicationRecord
   # TODO: extract in a service
+  # since it is a lot of logic
   def compute
     x + y
   end
