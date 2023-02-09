@@ -54,11 +54,16 @@ module Debtective
         puts(
           [
             todo.pathname.to_s.ljust(120),
-            todo.boundaries.to_s.rjust(12),
+            line_boundaries(todo).rjust(12),
             todo.boundaries.size.to_s.rjust(12)
           ].join(" | ")
         )
       end
+    end
+
+    # formatted boundaries of lines (index + 1)
+    def line_boundaries(todo)
+      [todo.boundaries.first + 1, todo.boundaries.last + 1].join(":")
     end
 
     # @return [void]
