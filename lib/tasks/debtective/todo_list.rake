@@ -32,7 +32,7 @@ namespace :debtective do
     puts separator
 
     todos.each do |todo|
-      location = "#{todo.pathname}:#{todo.boundaries.first + 1}".ljust(120)
+      location = "#{todo.pathname}:#{todo.todo_index + 1}".ljust(120)
       puts(
         [
           location,

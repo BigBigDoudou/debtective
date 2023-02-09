@@ -5,7 +5,7 @@ require "debtective/end_of_statement"
 module Debtective
   # Find the todos comments and their boundaries
   class FileTodos
-    Result = Struct.new(:pathname, :boundaries)
+    Result = Struct.new(:pathname, :todo_index, :boundaries)
 
     BEFORE_LINE_TODO_REGEX = /^\s*#\sTODO:\s/
     INLINE_TODO_REGEX = /\s*#\sTODO:\s/
@@ -22,7 +22,7 @@ module Debtective
         boundaries = boundaries(line, index)
         next if boundaries.nil?
 
-        Result.new(@pathname, boundaries)
+        Result.new(@pathname, index, boundaries)
       end
     end
 
