@@ -41,7 +41,7 @@ module Debtective
     # especially if first line is not the start of a statement
     def last_line_index
       @lines.index.with_index do |_line, index|
-        index > @first_line_index &&
+        index >= @first_line_index &&
           statement?(index) &&
           !chained?(index)
       end

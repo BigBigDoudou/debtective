@@ -190,6 +190,7 @@ RSpec.describe Debtective::EndOfStatement do
       let(:lines) do
         <<~RUBY.split("\n")
           class User
+            include HelloWorld
             def foo
               x + y
             end
@@ -198,7 +199,8 @@ RSpec.describe Debtective::EndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 2).call).to eq 2
+        expect(described_class.new(lines, 1).call).to eq 1
+        expect(described_class.new(lines, 3).call).to eq 3
       end
     end
 
