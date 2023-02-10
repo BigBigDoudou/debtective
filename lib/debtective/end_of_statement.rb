@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "parser/current"
 require "debtective/stderr_helper"
 
 module Debtective
@@ -30,6 +29,8 @@ module Debtective
 
     # index of the line ending the statement
     # @return [Integer]
+    # @note use suppress_stderr to prevent error outputs
+    #   from RubyVM::InstructionSequence.compile
     def call
       suppress_stderr { last_line_index }
     end
@@ -54,8 +55,8 @@ module Debtective
     # @return boolean
     def statement?(index)
       code = @lines[@first_line_index..index].join("\n")
-      ::Parser::CurrentRuby.parse(code)
-    rescue Parser::SyntaxError
+      RubyVM::InstructionSequence.compile(code)
+    rescue SyntaxError
       false
     end
 

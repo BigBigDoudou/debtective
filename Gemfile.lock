@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     debtective (0.2.1)
-      parser
 
 GEM
   remote: https://rubygems.org/

@@ -19,8 +19,6 @@ Gem::Specification.new do |spec|
   spec.metadata["changelog_uri"]         = "https://github.com/perangusta/debtective/CHANGELOG.md"
   spec.metadata["rubygems_mfa_required"] = "true"
 
-  spec.add_dependency "parser"
-
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rubocop"
