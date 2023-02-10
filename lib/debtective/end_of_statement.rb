@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "parser/current"
+require "debtective/stderr_helper"
 
 module Debtective
   # Find the index of the line ending a statement
@@ -18,6 +19,8 @@ module Debtective
   # => 3
   #
   class EndOfStatement
+    include StderrHelper
+
     # @param lines [Array<String>] lines of code
     # @param index [Integer] index of the statement first line
     def initialize(lines, first_line_index)
@@ -28,23 +31,21 @@ module Debtective
     # index of the line ending the statement
     # @return [Integer]
     def call
-      suppress_stderr do
-        last_line_index || @first_line_index
-      end
+      suppress_stderr { last_line_index }
     end
 
     private
 
-    # index of the line ending the statement
+    # recursively find index of the line ending the statement
+    # @param index [Integer] used for recursion
     # @return[Integer, void]
     # @note it is possible that no line ends the statement
     # especially if first line is not the start of a statement
-    def last_line_index
-      @lines.index.with_index do |_line, index|
-        index >= @first_line_index &&
-          statement?(index) &&
-          !chained?(index)
-      end
+    def last_line_index(index = @first_line_index)
+      return @first_line_index if index >= @lines.size
+      return index if !chained?(index) && statement?(index)
+
+      last_line_index(index + 1)
     end
 
     # check if the code from first index to given index is a statement
@@ -54,7 +55,6 @@ module Debtective
     def statement?(index)
       code = @lines[@first_line_index..index].join("\n")
       ::Parser::CurrentRuby.parse(code)
-      true
     rescue Parser::SyntaxError
       false
     end
@@ -65,17 +65,6 @@ module Debtective
     # @return boolean
     def chained?(index)
       @lines[index + 1]&.match?(/^(\s*)\./)
-    end
-
-    # silence the $stderr
-    # to avoid logs from the parser
-    # @return void
-    def suppress_stderr
-      original_stderr = $stderr.clone
-      $stderr.reopen(File.new("/dev/null", "w"))
-      yield
-    ensure
-      $stderr.reopen(original_stderr)
     end
   end
 end

@@ -7,17 +7,10 @@ module Debtective
   class TodoList
     DEFAULT_PATHS = ["./**/*"].freeze
 
-    REPORTS = %i[
-      combined_count
-      extended_count
-      todos
-    ].freeze
-
-    Result = Struct.new(*REPORTS)
-
-    # @return [TodoList::Result]
+    # @return [Array<FileTodos::Result>]
     def call
-      Result.new(*REPORTS.map { __send__(_1) })
+      ruby_pathnames
+        .flat_map { FileTodos.new(_1).call }
     end
 
     private
@@ -33,14 +26,6 @@ module Debtective
         .flat_map { File.extname(_1) == "" ? Dir[_1] : [_1] }
         .map { Pathname(_1) }
         .select { _1.file? && _1.extname == ".rb" }
-    end
-
-    # @return [Array<FileTodos::Result>]
-    def todos
-      @todos ||=
-        ruby_pathnames
-        .flat_map { FileTodos.new(_1).call }
-        .select(&:any?)
     end
 
     # @return [Integer]
