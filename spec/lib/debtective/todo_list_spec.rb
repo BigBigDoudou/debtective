@@ -15,6 +15,7 @@ RSpec.describe Debtective::TodoList do
           ["spec/dummy/app/models/user.rb", 4, 6..8],
           ["spec/dummy/app/models/user.rb", 12, 13..18],
           ["spec/dummy/app/controllers/users_controller.rb", 3, 4..9],
+          ["spec/dummy/app/controllers/users_controller.rb", 5, 5..5],
           ["spec/dummy/app/controllers/users_controller.rb", 6, 8..8]
         ]
       )
