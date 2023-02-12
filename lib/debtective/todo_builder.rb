@@ -11,12 +11,13 @@ module Debtective
     COMMENT_REGEX = /\s*#/
 
     # @param pathname [Pathname]
+    # @param index [Integer]
     def initialize(pathname, index)
       @pathname = pathname
       @index = index
     end
 
-    # @return [Array<FileTodos::Result>]
+    # @return [Debtective::Todo]
     def call
       Todo.new(
         @pathname,
@@ -34,8 +35,6 @@ module Debtective
     end
 
     # range of the concerned code
-    # @param line [String]
-    # @param index [Integer]
     # @return [Range, nil]
     def boundaries
       @boundaries ||=
@@ -50,7 +49,6 @@ module Debtective
     end
 
     # start index of the concerned code (i.e. below the TODO comment)
-    # @param todo_index [Integer]
     # @return [Integer]
     def statement_start
       lines.index.with_index do |line, i|

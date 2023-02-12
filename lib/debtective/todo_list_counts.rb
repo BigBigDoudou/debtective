@@ -3,7 +3,7 @@
 module Debtective
   # Apply calculations on a todo list
   class TodoListCounts
-    # @param todo_list [Array<Debtective::Todo>]
+    # @param todos [Array<Debtective::Todo>]
     def initialize(todos)
       @todos = todos
     end

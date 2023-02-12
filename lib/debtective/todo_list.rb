@@ -12,7 +12,7 @@ module Debtective
       @paths = paths
     end
 
-    # @return [Array<Todo>]
+    # @return [Array<Debtective::Todo>]
     def call
       ruby_pathnames.flat_map { pathname_todos(_1) }
     end

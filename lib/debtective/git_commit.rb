@@ -18,7 +18,7 @@ module Debtective
       git.gcommit(sha)
     end
 
-    # @return Git::Base
+    # @return [Git::Base]
     def git
       Git.open(".")
     end
