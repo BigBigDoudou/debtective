@@ -23,7 +23,8 @@ namespace :debtective do
 
     separator = Array.new(array_row.call(nil, nil, nil).size) { "-" }.join
 
-    todo_list = Debtective::TodoList.new.call
+    paths = Debtective.configuration&.paths || ["./**/*"]
+    todo_list = Debtective::TodoList.new(paths).call
     todos = todo_list.sort_by { _1.boundaries.size }.reverse
     todo_list_counts = Debtective::TodoListCounts.new(todos)
 
