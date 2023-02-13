@@ -8,7 +8,7 @@ module Debtective
   # Generate todolist
   class OutputTodos
     DIRECTORY_PATH = "debtective"
-    FILE_PATH = "#{DIRECTORY_PATH}/todos.json"
+    FILE_PATH = "#{DIRECTORY_PATH}/todos.json".freeze
 
     # @return [void]
     def call

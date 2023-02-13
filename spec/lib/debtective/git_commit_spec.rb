@@ -16,5 +16,17 @@ RSpec.describe Debtective::GitCommit do
       expect(git_commit.author.name).to eq "Edouard Piron"
       expect(git_commit.author.email).to eq "ed.piron@gmail.com"
     end
+
+    context "when commit cannot be found" do
+      before do
+        allow(Open3).to receive(:capture3).and_raise(Git::GitExecuteError)
+      end
+
+      it "returns a null commit" do
+        expect(git_commit.datetime).to be_nil
+        expect(git_commit.author.name).to be_nil
+        expect(git_commit.author.email).to be_nil
+      end
+    end
   end
 end
