@@ -5,7 +5,7 @@ require "debtective/stderr_helper"
 module Debtective
   # Find the index of the line ending a statement
   #
-  # EndOfStatement.new(
+  # FindEndOfStatement.new(
   #   [
   #     "class User",
   #     "  def example",
@@ -17,7 +17,7 @@ module Debtective
   # ).call
   # => 3
   #
-  class EndOfStatement
+  class FindEndOfStatement
     include StderrHelper
 
     # @param lines [Array<String>] lines of code

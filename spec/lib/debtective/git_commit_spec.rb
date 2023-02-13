@@ -12,7 +12,9 @@ RSpec.describe Debtective::GitCommit do
     end
 
     it "returns commit that introduced the code" do
-      expect(git_commit).to be_a Git::Object::Commit
+      expect(git_commit.datetime).to eq Time.parse("2023-02-06 22:54:14.000000000 +0100")
+      expect(git_commit.author.name).to eq "Edouard Piron"
+      expect(git_commit.author.email).to eq "ed.piron@gmail.com"
     end
   end
 end

@@ -18,3 +18,5 @@ coverage/*
 # builds
 debtective-*.gem
 
+# JSON output
+debtective/**/*

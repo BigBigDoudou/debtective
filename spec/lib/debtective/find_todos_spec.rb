@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "debtective/todo_list"
+require "debtective/find_todos"
 
-RSpec.describe Debtective::TodoList do
+RSpec.describe Debtective::FindTodos do
   describe "#call" do
-    subject(:todo_list) { described_class.new(["spec/dummy/app/**/*"]).call }
+    subject(:todos) { described_class.new(["spec/dummy/app/**/*"]).call }
 
     it "returns todos" do
       expect(
-        todo_list.map { [_1.pathname.to_s, _1.todo_index, _1.boundaries] }
+        todos.map { [_1.pathname.to_s, _1.todo_index, _1.boundaries] }
       ).to match_array(
         [
           ["spec/dummy/app/models/user.rb", 2, 3..20],
@@ -19,6 +19,15 @@ RSpec.describe Debtective::TodoList do
           ["spec/dummy/app/controllers/users_controller.rb", 6, 8..8]
         ]
       )
+    end
+
+    it "accepts a hook lambda" do
+      count = 0
+      described_class.new(
+        ["spec/dummy/app/**/*"],
+        hook: -> { count += _1.size }
+      ).call
+      expect(count).to eq 35
     end
   end
 end

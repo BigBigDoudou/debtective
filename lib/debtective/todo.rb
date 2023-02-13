@@ -5,15 +5,19 @@ require "debtective/git_commit"
 module Debtective
   # Hold todo information
   class Todo
-    Author = Struct.new(:email, :name)
-    Commit = Struct.new(:author, :date)
+    class << self
+      # @return [Debtective::Todo]
+      def build(pathname, index)
+        BuildTodo.new(pathname, index)
+      end
+    end
 
     attr_accessor :pathname, :todo_index, :boundaries, :commit
 
     # @param pathname [Pathname]
     # @param todo_index [Integer] first line of todo comment
     # @param boundaries [Range] first and last index of the concerned code
-    # @param commit [Git::Object::Commit] commit that introduced the todo
+    # @param commit [Debtective::GitCommit::Commit] commit that introduced the todo
     def initialize(pathname, todo_index, boundaries, commit)
       @pathname = pathname
       @todo_index = todo_index

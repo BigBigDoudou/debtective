@@ -10,3 +10,6 @@ require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
 task default: %i[spec rubocop]
+
+require_relative "lib/debtective"
+load "lib/tasks/debtective/todo_list.rake"

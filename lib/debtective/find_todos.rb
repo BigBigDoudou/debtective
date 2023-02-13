@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
-require "debtective/todo_builder"
+require "debtective/build_todo"
 
 module Debtective
-  # Find and investigate todo comments
-  class TodoList
+  # Find and investigate todo comments and return a list of todos
+  class FindTodos
     TODO_REGEX = /#\sTODO:/
 
     # @param paths [Array<String>]
-    def initialize(paths)
+    def initialize(paths, hook: nil)
       @paths = paths
+      @hook = hook
     end
 
     # @return [Array<Debtective::Todo>]
@@ -31,7 +32,9 @@ module Debtective
     # @return [Array<Debtective::Todo>]
     def pathname_todos(pathname)
       pathname.readlines.filter_map.with_index do |line, index|
-        TodoBuilder.new(pathname, index).call if line.match?(TODO_REGEX)
+        next unless line.match?(TODO_REGEX)
+
+        Todo.build(pathname, index).call.tap { @hook&.call(_1) }
       end
     end
   end
