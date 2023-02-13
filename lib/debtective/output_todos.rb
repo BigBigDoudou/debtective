@@ -42,10 +42,27 @@ module Debtective
     # @return [void]
     def log_table
       puts separator
-      puts table_row("location", "author", "date", "size")
+      puts table_row("location", "author", "days", "size")
       puts separator
       todo_list.todos
       puts separator
+    end
+
+    # @return [Debtective::Todo]
+    def todo_list
+      @todo_list ||= Debtective::TodoList.new(
+        Debtective.configuration&.paths || ["./**/*"],
+        hook: lambda do |todo|
+          puts(
+            table_row(
+              todo.location,
+              todo.commit.author.name || "?",
+              todo.days || "?",
+              todo.size
+            )
+          )
+        end
+      )
     end
 
     # @return [void]
@@ -54,30 +71,6 @@ module Debtective
       puts "combined lines count: #{todo_list.combined_count}"
       puts "extended lines count: #{todo_list.extended_count}"
       puts separator
-    end
-
-    # @return [Debtective::Todo]
-    def todo_list
-      @todo_list ||= Debtective::TodoList.new(paths, hook: hook)
-    end
-
-    # @return [String]
-    def paths
-      Debtective.configuration&.paths || ["./**/*"]
-    end
-
-    # @return [Lambda]
-    def hook
-      lambda do |todo|
-        puts(
-          table_row(
-            todo.location,
-            todo.commit.author.name || "?",
-            todo.commit.time&.strftime("%F") || "?",
-            todo.size
-          )
-        )
-      end
     end
 
     # @return [String]

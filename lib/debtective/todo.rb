@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "debtective/git_commit"
+require "pry"
 
 module Debtective
   # Hold todo information
@@ -41,6 +42,13 @@ module Debtective
     # @return [Range]
     def line_numbers
       (boundaries.min + 1)..(boundaries.max + 1)
+    end
+
+    # @return [Integer]
+    def days
+      return if commit.time.nil?
+
+      ((Time.now - commit.time) / (24 * 60 * 60)).round
     end
 
     # @return [Hash]
