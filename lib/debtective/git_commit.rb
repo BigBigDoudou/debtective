@@ -7,7 +7,7 @@ module Debtective
   # find the commit that introduced a line of code
   class GitCommit
     Author = Struct.new(:email, :name)
-    Commit = Struct.new(:author, :datetime)
+    Commit = Struct.new(:sha, :author, :time)
 
     SPECIAL_CHARACTER_REGEX = /(?!\w|\s|#|:).+/
 
@@ -20,10 +20,10 @@ module Debtective
 
     # @return [Debtective::GitCommit::Commit]
     def call
-      Commit.new(author, datetime)
+      Commit.new(sha, author, time)
     rescue Git::GitExecuteError
       author = Author.new(nil, nil)
-      Commit.new(author, nil)
+      Commit.new(nil, author, nil)
     end
 
     # @return [Debtective::GitCommit::Author]
@@ -32,7 +32,7 @@ module Debtective
     end
 
     # @return [Time]
-    def datetime
+    def time
       commit.date
     end
 

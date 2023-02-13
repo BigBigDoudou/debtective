@@ -15,7 +15,7 @@ RSpec.describe Debtective::TodoList do
               todo.todo_index,
               todo.boundaries,
               todo.commit.author.name,
-              todo.commit.datetime.strftime("%F")
+              todo.commit.time.strftime("%F")
             ]
           end
         ).to eq(

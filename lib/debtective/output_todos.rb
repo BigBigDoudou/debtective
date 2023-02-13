@@ -11,50 +11,25 @@ module Debtective
 
     # @return [void]
     def call
-      log_todos
+      log_table
+      log_counts
       update_json_file
     end
 
     private
 
     # @return [void]
-    def log_todos
-      puts separator
-      log_table_headers
-      puts separator
-      log_table_rows
-      puts separator
-      log_todos_count
-      log_combined_count
-      log_extended_count
-      puts separator
-    end
-
-    # @return [void]
     def update_json_file
       create_directory
       File.open(FILE_PATH, "w") do |file|
-        file.puts JSON.pretty_generate(todos_hash)
+        file.puts(
+          JSON.pretty_generate(
+            todo_list.todos.map(&:to_h)
+          )
+        )
       end
       puts FILE_PATH
       puts separator
-    end
-
-    # @return [Hash]
-    def todos_hash
-      todo_list.todos.map do |todo|
-        {
-          pathname: todo.pathname,
-          location: todo.location,
-          line_numbers: todo.line_numbers,
-          size: todo.size,
-          author: {
-            name: todo.commit.author&.name,
-            email: todo.commit.author&.email
-          },
-          datetime: todo.commit.datetime
-        }
-      end
     end
 
     # @return [void]
@@ -65,28 +40,20 @@ module Debtective
     end
 
     # @return [void]
-    def log_table_headers
-      puts table_row("location", "author", "date")
-    end
-
-    # @return [void]
-    def log_table_rows
+    def log_table
+      puts separator
+      puts table_row("location", "author", "date", "size")
+      puts separator
       todo_list.todos
+      puts separator
     end
 
     # @return [void]
-    def log_todos_count
+    def log_counts
       puts "count: #{todo_list.todos.count}"
-    end
-
-    # @return [void]
-    def log_combined_count
       puts "combined lines count: #{todo_list.combined_count}"
-    end
-
-    # @return [void]
-    def log_extended_count
       puts "extended lines count: #{todo_list.extended_count}"
+      puts separator
     end
 
     # @return [Debtective::Todo]
@@ -106,7 +73,8 @@ module Debtective
           table_row(
             todo.location,
             todo.commit.author.name || "?",
-            todo.commit.datetime&.strftime("%F") || "?"
+            todo.commit.time&.strftime("%F") || "?",
+            todo.size
           )
         )
       end
@@ -114,15 +82,16 @@ module Debtective
 
     # @return [String]
     def separator
-      @separator ||= Array.new(table_row(nil, nil, nil).size) { "-" }.join
+      @separator ||= Array.new(table_row(nil, nil, nil, nil).size) { "-" }.join
     end
 
     # @return [String]
-    def table_row(col1, col2, col3)
+    def table_row(col1, col2, col3, col4)
       [
         format("%-80.80s", col1.to_s),
         format("%-20.20s", col2.to_s),
-        format("%-12.12s", col3.to_s)
+        format("%-12.12s", col3.to_s),
+        format("%-12.12s", col4.to_s)
       ].join(" | ")
     end
   end

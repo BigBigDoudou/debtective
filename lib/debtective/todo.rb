@@ -42,5 +42,20 @@ module Debtective
     def line_numbers
       (boundaries.min + 1)..(boundaries.max + 1)
     end
+
+    # @return [Hash]
+    def to_h
+      {
+        pathname: pathname,
+        location: location,
+        line_numbers: line_numbers.to_a,
+        size: size,
+        commit: {
+          sha: commit.sha,
+          author: commit.author.to_h,
+          time: commit.time.to_s
+        }
+      }
+    end
   end
 end
