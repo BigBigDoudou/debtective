@@ -8,6 +8,7 @@ module Debtective
     TODO_REGEX = /#\sTODO:/
 
     # @param paths [Array<String>]
+    # @param hook [Lambda]
     def initialize(paths, hook: nil)
       @paths = paths
       @hook = hook

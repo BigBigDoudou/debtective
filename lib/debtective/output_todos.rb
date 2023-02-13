@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
-require "debtective/find_todos"
-require "debtective/todos_counts"
+require "debtective/todo_list"
 
 module Debtective
   # Generate todolist
@@ -43,7 +42,7 @@ module Debtective
 
     # @return [Hash]
     def todos_hash
-      todos.map do |todo|
+      todo_list.todos.map do |todo|
         {
           pathname: todo.pathname,
           location: todo.location,
@@ -72,32 +71,27 @@ module Debtective
 
     # @return [void]
     def log_table_rows
-      todos
+      todo_list.todos
     end
 
     # @return [void]
     def log_todos_count
-      puts "count: #{todos.count}"
+      puts "count: #{todo_list.todos.count}"
     end
 
     # @return [void]
     def log_combined_count
-      puts "combined lines count: #{counts.combined_count}"
+      puts "combined lines count: #{todo_list.combined_count}"
     end
 
     # @return [void]
     def log_extended_count
-      puts "extended lines count: #{counts.extended_count}"
+      puts "extended lines count: #{todo_list.extended_count}"
     end
 
     # @return [Debtective::Todo]
-    def todos
-      @todos ||= Debtective::FindTodos.new(paths, hook: hook).call
-    end
-
-    # @return [Debtective::TodosCount]
-    def counts
-      @counts ||= Debtective::TodosCounts.new(todos)
+    def todo_list
+      @todo_list ||= Debtective::TodoList.new(paths, hook: hook)
     end
 
     # @return [String]
