@@ -7,7 +7,7 @@ module Debtective
   # find the commit that introduced a line of code
   class GitCommit
     Author = Struct.new(:email, :name)
-    Commit = Struct.new(:author, :datetime)
+    Commit = Struct.new(:author, :time)
 
     SPECIAL_CHARACTER_REGEX = /(?!\w|\s|#|:).+/
 
@@ -20,7 +20,7 @@ module Debtective
 
     # @return [Debtective::GitCommit::Commit]
     def call
-      Commit.new(author, datetime)
+      Commit.new(author, time)
     rescue Git::GitExecuteError
       author = Author.new(nil, nil)
       Commit.new(author, nil)
@@ -28,12 +28,12 @@ module Debtective
 
     # @return [Debtective::GitCommit::Author]
     def author
-      Author.new(commit.author.email, commit.author.name)
+      Author.new(matches[:email], matches[:name])
     end
 
     # @return [Time]
-    def datetime
-      commit.date
+    def time
+      Time.parse(matches[:time])
     end
 
     # @return [Git::Base]
@@ -44,6 +44,25 @@ module Debtective
     # @return [Git::Object::Commit]
     def commit
       git.gcommit(sha)
+    end
+
+    # @return [Hash]
+    def matches
+      @matches ||=
+        %i[sha name email time].zip(
+          git_search.match(
+            /^commit\s(\w{40})\nAuthor:\s(.*)\s<(.*@.*)>\nDate:\s+(.*)\n\n/
+          ).to_a[1..]
+        ).to_h
+    end
+
+    # @return [String]
+    def git_search
+      @git_search ||=
+        begin
+          cmd = "git log -S \"#{safe_code}\" #{@pathname}"
+          ::Open3.capture3(cmd).first
+        end
     end
 
     # commit sha

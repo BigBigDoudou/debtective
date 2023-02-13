@@ -22,7 +22,9 @@ module Debtective
       puts separator
       log_table_headers
       puts separator
+      start = Time.now
       log_table_rows
+      puts Time.now - start
       puts separator
       log_todos_count
       log_combined_count
@@ -52,7 +54,7 @@ module Debtective
             name: todo.commit.author&.name,
             email: todo.commit.author&.email
           },
-          datetime: todo.commit.datetime
+          time: todo.commit.time
         }
       end
     end
@@ -106,7 +108,7 @@ module Debtective
           table_row(
             todo.location,
             todo.commit.author.name || "?",
-            todo.commit.datetime&.strftime("%F") || "?"
+            todo.commit.time&.strftime("%F") || "?"
           )
         )
       end
