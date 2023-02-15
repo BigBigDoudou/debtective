@@ -20,14 +20,5 @@ RSpec.describe Debtective::FindTodos do
         ]
       )
     end
-
-    it "accepts a hook lambda" do
-      count = 0
-      described_class.new(
-        ["spec/dummy/app/**/*"],
-        hook: -> { count += _1.size }
-      ).call
-      expect(count).to eq 35
-    end
   end
 end

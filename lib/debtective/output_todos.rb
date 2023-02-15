@@ -10,7 +10,8 @@ module Debtective
 
     # @return [void]
     def call
-      log_table
+      log_table_headers
+      log_table_rows
       log_counts
       update_json_file
     end
@@ -38,19 +39,16 @@ module Debtective
     end
 
     # @return [void]
-    def log_table
+    def log_table_headers
       puts separator
       puts table_row("location", "author", "days", "size")
       puts separator
-      todo_list.todos
-      puts separator
     end
 
-    # @return [Debtective::Todo]
-    def todo_list
-      @todo_list ||= Debtective::TodoList.new(
-        Debtective.configuration&.paths || ["./**/*"],
-        hook: lambda do |todo|
+    # @return [void]
+    def log_table_rows
+      with_trace_logs(
+        lambda do |todo|
           puts(
             table_row(
               todo.location,
@@ -60,6 +58,31 @@ module Debtective
             )
           )
         end
+      ) do
+        todo_list.todos
+      end
+      puts separator
+    end
+
+    # @param lambda [Lambda]
+    # @yield
+    def with_trace_logs(lambda)
+      trace =
+        TracePoint.new(:return) do |trace_point|
+          next unless trace_point.defined_class == Debtective::BuildTodo && trace_point.method_id == :call
+
+          todo = trace_point.return_value
+          lambda.call(todo)
+        end
+      trace.enable
+      yield
+      trace.disable
+    end
+
+    # @return [Debtective::Todo]
+    def todo_list
+      @todo_list ||= Debtective::TodoList.new(
+        Debtective.configuration&.paths || ["./**/*"]
       )
     end
 

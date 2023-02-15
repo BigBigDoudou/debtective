@@ -8,15 +8,13 @@ module Debtective
     Author = Struct.new(:email, :name, :todos)
 
     # @param paths [Array<String>]
-    # @param hook [Lambda]
-    def initialize(paths, hook: nil)
+    def initialize(paths)
       @paths = paths
-      @hook = hook
     end
 
     # @return [Array<Debtective::Todo>]
     def todos
-      @todos ||= Debtective::FindTodos.new(@paths, hook: @hook).call
+      @todos ||= Debtective::FindTodos.new(@paths).call
     end
 
     # @return [Array<TodoList::Author>]

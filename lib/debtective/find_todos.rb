@@ -8,10 +8,8 @@ module Debtective
     TODO_REGEX = /#\sTODO:/
 
     # @param paths [Array<String>]
-    # @param hook [Lambda]
-    def initialize(paths, hook: nil)
+    def initialize(paths)
       @paths = paths
-      @hook = hook
     end
 
     # @return [Array<Debtective::Todo>]
@@ -35,7 +33,7 @@ module Debtective
       pathname.readlines.filter_map.with_index do |line, index|
         next unless line.match?(TODO_REGEX)
 
-        Todo.build(pathname, index).call.tap { @hook&.call(_1) }
+        Todo.build(pathname, index)
       end
     end
   end

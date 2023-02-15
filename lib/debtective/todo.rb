@@ -9,7 +9,7 @@ module Debtective
     class << self
       # @return [Debtective::Todo]
       def build(pathname, index)
-        BuildTodo.new(pathname, index)
+        BuildTodo.new(pathname, index).call
       end
     end
 
