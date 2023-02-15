@@ -7,16 +7,9 @@ RSpec.describe Debtective::Todo do
     subject(:todo) do
       described_class.new(
         "foo.rb",
-        42,
-        43..45,
-        Debtective::GitCommit::Commit.new(
-          "1234",
-          Debtective::GitCommit::Author.new(
-            "jane.doe@mail.com",
-            "Jane Doe"
-          ),
-          Time.new(2000)
-        )
+        Array.new(42, "") + ["#TODO: do that", "def example", "  x + y", "end"],
+        42..42,
+        43..45
       )
     end
 
@@ -32,14 +25,22 @@ RSpec.describe Debtective::Todo do
       end
     end
 
-    describe "#line_numbers" do
-      it "returns the numbers of the first and last lines" do
-        expect(todo.line_numbers).to eq 44..46
-      end
-    end
-
     describe "#to_h" do
       it "returns an hash with todo information" do
+        commit =
+          instance_double(
+            Debtective::GitCommit,
+            call: Debtective::GitCommit::Commit.new(
+              "1234",
+              Debtective::GitCommit::Author.new("jane.doe@mail.com", "Jane Doe"),
+              Time.new(2000)
+            )
+          )
+        expect(Debtective::GitCommit)
+          .to receive(:new)
+          .with("foo.rb", "#TODO: do that")
+          .and_return(commit)
+
         expect(todo.to_h).to eq(
           {
             commit: {
@@ -48,9 +49,10 @@ RSpec.describe Debtective::Todo do
                 name: "Jane Doe"
               },
               sha: "1234",
-              time: "2000-01-01 00:00:00 +0100"
+              time: Time.parse("2000-01-01 00:00:00 +0100")
             },
-            line_numbers: [44, 45, 46],
+            todo_boundaries: [42, 42],
+            statement_boundaries: [43, 45],
             location: "foo.rb:43",
             pathname: "foo.rb",
             size: 3

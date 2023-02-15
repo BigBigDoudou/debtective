@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "debtective/git_commit"
-require "pry"
 
 module Debtective
   # Hold todo information
@@ -13,35 +12,35 @@ module Debtective
       end
     end
 
-    attr_accessor :pathname, :todo_index, :boundaries, :commit
+    attr_accessor :pathname, :todo_boundaries, :statement_boundaries
 
     # @param pathname [Pathname]
-    # @param todo_index [Integer] first line of todo comment
-    # @param boundaries [Range] first and last index of the concerned code
-    # @param commit [Debtective::GitCommit::Commit] commit that introduced the todo
-    def initialize(pathname, todo_index, boundaries, commit)
+    # @param lines [Array<String>]
+    # @param todo_boundaries [Range]
+    # @param statement_boundaries [Range]
+    def initialize(pathname, lines, todo_boundaries, statement_boundaries)
       @pathname = pathname
-      @todo_index = todo_index
-      @boundaries = boundaries
-      @commit = commit
+      @lines = lines
+      @todo_boundaries = todo_boundaries
+      @statement_boundaries = statement_boundaries
     end
 
     # location in the codebase
     # @return [String]
     def location
-      "#{@pathname}:#{@todo_index + 1}"
+      "#{@pathname}:#{@todo_boundaries.min + 1}"
     end
 
     # size of the todo code
     # @return [Integer]
     def size
-      boundaries.size
+      @statement_boundaries.size
     end
 
-    # line numbers (as displayed in an IDE)
-    # @return [Range]
-    def line_numbers
-      (boundaries.min + 1)..(boundaries.max + 1)
+    # return commit that introduced the todo
+    # @return [Git::Object::Commit]
+    def commit
+      @commit ||= Debtective::GitCommit.new(@pathname, @lines[@todo_boundaries.min]).call
     end
 
     # @return [Integer]
@@ -56,12 +55,13 @@ module Debtective
       {
         pathname: pathname,
         location: location,
-        line_numbers: line_numbers.to_a,
+        todo_boundaries: todo_boundaries.minmax,
+        statement_boundaries: statement_boundaries.minmax,
         size: size,
         commit: {
           sha: commit.sha,
           author: commit.author.to_h,
-          time: commit.time.to_s
+          time: commit.time
         }
       }
     end

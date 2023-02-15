@@ -37,7 +37,7 @@ module Debtective
         .values
         .sum do |pathname_todos|
           pathname_todos
-            .map { _1.boundaries.to_a }
+            .map { _1.statement_boundaries.to_a }
             .reduce(:|)
             .length
         end

@@ -21,9 +21,9 @@ module Debtective
     def call
       Todo.new(
         @pathname,
-        @index,
-        boundaries,
-        commit
+        lines,
+        todo_boundaries,
+        statement_boundaries
       )
     end
 
@@ -34,10 +34,15 @@ module Debtective
       @lines ||= @pathname.readlines
     end
 
+    # @return [Range]
+    def todo_boundaries
+      @index..([@index, statement_boundaries.min - 1].max)
+    end
+
     # range of the concerned code
-    # @return [Range, nil]
-    def boundaries
-      @boundaries ||=
+    # @return [Range]
+    def statement_boundaries
+      @statement_boundaries ||=
         case lines[@index]
         when BEFORE_LINE_TODO_REGEX
           first_line_index = statement_start
@@ -56,12 +61,6 @@ module Debtective
           !line.strip.empty? &&
           !line.match?(COMMENT_REGEX)
       end
-    end
-
-    # return commit that introduced the todo
-    # @return [Git::Object::Commit]
-    def commit
-      Debtective::GitCommit.new(@pathname, lines[@index]).call
     end
   end
 end

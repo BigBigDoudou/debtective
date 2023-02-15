@@ -12,20 +12,20 @@ RSpec.describe Debtective::TodoList do
           todo_list.todos.map do |todo|
             [
               todo.pathname.to_s,
-              todo.todo_index,
-              todo.boundaries,
+              todo.todo_boundaries,
+              todo.statement_boundaries,
               todo.commit.author.name,
               todo.commit.time.strftime("%F")
             ]
           end
         ).to eq(
           [
-            ["spec/dummy/app/controllers/users_controller.rb", 3, 4..9, "Edouard Piron", "2023-02-07"],
-            ["spec/dummy/app/controllers/users_controller.rb", 5, 5..5, "Edouard Piron", "2023-02-11"],
-            ["spec/dummy/app/controllers/users_controller.rb", 6, 8..8, "Edouard Piron", "2023-02-07"],
-            ["spec/dummy/app/models/user.rb", 2, 3..20, "Edouard Piron", "2023-02-06"],
-            ["spec/dummy/app/models/user.rb", 4, 6..8, "Edouard Piron", "2023-02-06"],
-            ["spec/dummy/app/models/user.rb", 12, 13..18, "Edouard Piron", "2023-02-06"]
+            ["spec/dummy/app/controllers/users_controller.rb", 3..3, 4..9, "Edouard Piron", "2023-02-07"],
+            ["spec/dummy/app/controllers/users_controller.rb", 5..5, 5..5, "Edouard Piron", "2023-02-11"],
+            ["spec/dummy/app/controllers/users_controller.rb", 6..7, 8..8, "Edouard Piron", "2023-02-07"],
+            ["spec/dummy/app/models/user.rb", 2..2, 3..20, "Edouard Piron", "2023-02-06"],
+            ["spec/dummy/app/models/user.rb", 4..5, 6..8, "Edouard Piron", "2023-02-06"],
+            ["spec/dummy/app/models/user.rb", 12..12, 13..18, "Edouard Piron", "2023-02-06"]
           ]
         )
       end
@@ -41,7 +41,7 @@ RSpec.describe Debtective::TodoList do
               author.todos.map do |todo|
                 [
                   todo.pathname.to_s,
-                  todo.todo_index
+                  todo.todo_boundaries.min
                 ]
               end
             ]
