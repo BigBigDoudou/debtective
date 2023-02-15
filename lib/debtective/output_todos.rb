@@ -6,8 +6,7 @@ require "debtective/todo_list"
 module Debtective
   # Generate todolist
   class OutputTodos
-    DIRECTORY_PATH = "debtective"
-    FILE_PATH = "#{DIRECTORY_PATH}/todos.json".freeze
+    FILE_PATH = "todos.json"
 
     # @return [void]
     def call
@@ -20,7 +19,6 @@ module Debtective
 
     # @return [void]
     def update_json_file
-      create_directory
       File.open(FILE_PATH, "w") do |file|
         file.puts(
           JSON.pretty_generate(

@@ -5,17 +5,18 @@ require "debtective/stderr_helper"
 module Debtective
   # Find the index of the line ending a statement
   #
-  # FindEndOfStatement.new(
-  #   [
-  #     "class User",
-  #     "  def example",
-  #     "    x + y",
-  #     "  end"
-  #     "end"
-  #   ],
-  #   1
-  # ).call
-  # => 3
+  # @example
+  #   FindEndOfStatement.new(
+  #     [
+  #       "class User",
+  #       "  def example",
+  #       "    x + y",
+  #       "  end"
+  #       "end"
+  #     ],
+  #     1
+  #   ).call
+  #   => 3
   #
   class FindEndOfStatement
     include StderrHelper

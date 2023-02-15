@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "yard"
 
-  spec.files = Dir["lib/**/*.rb", "lib/tasks/**/*.rake", "MIT-LICENSE", "Rakefile", "README.md"]
+  spec.files = Dir.glob("{lib,bin}/**/*")
 end

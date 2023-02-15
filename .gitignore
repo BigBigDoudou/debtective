@@ -19,4 +19,4 @@ coverage/*
 debtective-*.gem
 
 # JSON output
-debtective/**/*
+todos.json
