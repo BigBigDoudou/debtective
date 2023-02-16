@@ -11,12 +11,19 @@ end
 namespace :debtective do
   desc "Todo List"
   task :todo_list do
-    if ARGV.include?("--me")
-      user_name = `git config user.name`.strip
+    user_name =
+      if ARGV.include?("--me")
+        `git config user.name`.strip
+      elsif ARGV.include?("--user")
+        ARGV[ARGV.index("--user") + 1]
+      end
+
+    if user_name
       puts "Searching TODOs from #{user_name}..."
     else
       puts "Searching TODOs..."
     end
+
     Debtective::OutputTodos.new(user_name, quiet: ARGV.include?("--quiet")).call
   end
 end
