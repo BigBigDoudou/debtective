@@ -4,4 +4,6 @@
 require "debtective"
 require "debtective/output_todos"
 
-Debtective::OutputTodos.new.call
+user_name = `git config user.name`.strip if ARGV.include?("--me")
+quiet = ARGV.include?("--quiet")
+Debtective::OutputTodos.new(user_name, quiet: quiet).call

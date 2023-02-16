@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pathname"
 require "debtective/todo"
 require "debtective/find_end_of_statement"
 

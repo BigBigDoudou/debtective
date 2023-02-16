@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pathname"
 require "debtective/build_todo"
 
 module Debtective

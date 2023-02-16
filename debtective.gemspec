@@ -29,4 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "yard"
 
   spec.files = Dir.glob("{lib,bin}/**/*")
+
+  spec.bindir      = "bin"
+  spec.executables = ["debtective"]
 end
