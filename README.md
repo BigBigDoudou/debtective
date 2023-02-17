@@ -1,16 +1,30 @@
 # Debtective
 
-Find todos in your codebase so you don't forget to pay off your debts! 💰
+Find TODOs in your codebase so you don't forget to pay off your debts! 💰
 
 ## Usage
 
-Run the task with:
+Run it with:
 
 ```bash
-bundle exec rake debtective:todo_list
+bundle exec debtective
 ```
 
-It outputs the todos positions with the concerned lines of code and some counts.
+Print to stdout the TODOs positions with their location and author.
+
+Result is saved in a JSON file `todos.json`.
+
+To find only your TODOs, use the `--me` option:
+
+```bash
+bundle exec debtective --me
+```
+
+To find only a specific user TODOs, use the `--user` option:
+
+```bash
+bundle exec debtective --user "Jane Doe" 
+```
 
 ## Installation
 
