@@ -10,7 +10,7 @@ module Debtective
     class Build
       BEFORE_LINE_TODO_REGEX = /^\s*#\sTODO:\s/
       INLINE_TODO_REGEX = /\s*#\sTODO:\s/
-      COMMENT_REGEX = /\s*#/
+      COMMENT_REGEX = /^\s*#/
 
       # @param pathname [Pathname]
       # @param index [Integer]
