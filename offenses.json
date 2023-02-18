@@ -1,0 +1,54 @@
+[
+  {
+    "pathname": "./spec/dummy/app/controllers/users_controller.rb",
+    "location": "./spec/dummy/app/controllers/users_controller.rb:9",
+    "index": 8,
+    "commit": {
+      "sha": null,
+      "author": {
+        "email": null,
+        "name": null
+      },
+      "time": null
+    }
+  },
+  {
+    "pathname": "./spec/dummy/app/models/application_record.rb",
+    "location": "./spec/dummy/app/models/application_record.rb:4",
+    "index": 3,
+    "commit": {
+      "sha": null,
+      "author": {
+        "email": null,
+        "name": null
+      },
+      "time": null
+    }
+  },
+  {
+    "pathname": "./spec/dummy/app/models/user.rb",
+    "location": "./spec/dummy/app/models/user.rb:8",
+    "index": 7,
+    "commit": {
+      "sha": null,
+      "author": {
+        "email": null,
+        "name": null
+      },
+      "time": null
+    }
+  },
+  {
+    "pathname": "./spec/dummy/app/models/user.rb",
+    "location": "./spec/dummy/app/models/user.rb:16",
+    "index": 15,
+    "commit": {
+      "sha": null,
+      "author": {
+        "email": null,
+        "name": null
+      },
+      "time": null
+    }
+  }
+]

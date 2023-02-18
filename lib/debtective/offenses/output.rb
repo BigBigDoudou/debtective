@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require "json"
-require "debtective/todos/print_table"
-require "debtective/todos/list"
+require "debtective/offenses/print_table"
+require "debtective/offenses/find"
 
 module Debtective
-  module Todos
-    # Generate todolist
+  module Offenses
+    # Generate offenses list
     class Output
-      FILE_PATH = "todos.json"
+      FILE_PATH = "offenses.json"
 
       # @param user_name [String] git user email to filter
       # @param quiet [boolean]
@@ -19,8 +19,8 @@ module Debtective
 
       # @return [void]
       def call
-        @list = log_table
-        @list ||= Debtective::Todos::List.new(Debtective.configuration&.paths || ["./**/*"])
+        @offenses = log_table
+        @offenses ||= Debtective::Offenses::Find.new(Debtective.configuration&.paths || ["./**/*"]).call
         filter_list!
         log_counts
         update_json_file
@@ -35,21 +35,19 @@ module Debtective
       def log_table
         return if @quiet
 
-        Debtective::Todos::PrintTable.new(@user_name).call
+        Debtective::Offenses::PrintTable.new(@user_name).call
       end
 
       # @return [void]
       def filter_list!
-        !@user_name.nil? && @list.todos.select! { _1.commit.author.name == @user_name }
+        !@user_name.nil? && @offenses.select! { _1.commit.author.name == @user_name }
       end
 
       # @return [void]
       def log_counts
         return if @quiet
 
-        puts "total: #{@list.todos.count}"
-        puts "combined lines count: #{@list.combined_count}"
-        puts "extended lines count: #{@list.extended_count}"
+        puts "total: #{@offenses.count}"
       end
 
       # @return [void]
@@ -57,7 +55,7 @@ module Debtective
         File.open(FILE_PATH, "w") do |file|
           file.puts(
             JSON.pretty_generate(
-              @list.todos.map(&:to_h)
+              @offenses.map(&:to_h)
             )
           )
         end

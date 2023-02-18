@@ -5,7 +5,7 @@ class User < ApplicationRecord
   # TODO: extract in a service
   # since it is a lot of logic
   def compute
-    x + y
+    x + y # rubocop:disable Layout/ExtraSpacing
   end
 
   def send_email
@@ -13,7 +13,7 @@ class User < ApplicationRecord
     # TODO: improve performance
     if true
       do_this
-      do_that
+      do_that # rubocop:disable Naming/ConstantName
     else
       do_something_else
     end

@@ -6,6 +6,6 @@ class UsersController < ApplicationController
     authorize!(current_user) # TODO: move into a before hook
     # TODO: preload user tasks
     # to avoid n+1
-    User.all
+    User.all # rubocop:disable Layout/ExtraSpacing
   end
 end

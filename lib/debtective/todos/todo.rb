@@ -54,7 +54,7 @@ module Debtective
       # @return [Hash]
       def to_h
         {
-          pathname: pathname,
+          pathname: @pathname,
           location: location,
           todo_boundaries: todo_boundaries.minmax,
           statement_boundaries: statement_boundaries.minmax,
