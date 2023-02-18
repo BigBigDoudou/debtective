@@ -1,73 +1,20 @@
 # frozen_string_literal: true
 
-require "debtective/todos/list"
+require "debtective/todos/find"
+require "debtective/print_table"
 
 module Debtective
   module Todos
     # Print todos as a table in the stdout
-    class PrintTable
-      # @param user_name [String] git user email to filter
-      def initialize(user_name = nil)
-        @user_name = user_name
-      end
-
-      # @return [Debtective::Todos::List]
-      def call
-        log_table_headers
-        log_table_rows
-        list
-      end
-
+    class PrintTable < Debtective::PrintTable
       private
 
-      # @return [void]
-      def log_table_headers
-        puts separator
-        puts table_row("location", "author", "days", "size")
-        puts separator
-      end
+      KLASS = Debtective::Todos::Todo
+      HEADERS = %w[location author days size].freeze
 
-      # @return [void]
-      def log_table_rows
-        trace.enable
-        list.todos
-        trace.disable
-        puts separator
-      end
-
-      # use a trace to log each todo as soon as it is found
-      # @return [Tracepoint]
-      def trace
-        TracePoint.new(:return) do |trace_point|
-          next unless trace_point.defined_class == Debtective::Todos::Todo && trace_point.method_id == :initialize
-
-          todo = trace_point.self
-          log_todo(todo)
-        end
-      end
-
-      # if a user_name is given and is not the commit author
-      # the line is temporary and will be replaced by the next one
-      # @return [void]
-      def log_todo(todo)
-        row = table_row(
-          todo.location,
-          todo.commit.author.name || "?",
-          todo.days || "?",
-          todo.size
-        )
-        if @user_name.nil? || @user_name == todo.commit.author.name
-          puts row
-        else
-          print "#{row}\r"
-        end
-      end
-
-      # @return [Debtective::Todos::Todo]
-      def list
-        @list ||= Debtective::Todos::List.new(
-          Debtective.configuration&.paths || ["./**/*"]
-        )
+      # @return [Array<Debtective::Todos::Todo>]
+      def elements
+        @elements ||= Debtective::Todos::Find.new(paths).call
       end
 
       # @return [String]
@@ -80,9 +27,13 @@ module Debtective
         ].join(" | ")
       end
 
-      # @return [String]
-      def separator
-        @separator ||= Array.new(table_row(nil, nil, nil, nil).size) { "-" }.join
+      def element_row(todo)
+        table_row(
+          todo.location,
+          todo.commit.author.name || "?",
+          todo.days || "?",
+          todo.size
+        )
       end
     end
   end

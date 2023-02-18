@@ -6,13 +6,6 @@ module Debtective
   module Todos
     # Hold todo information
     class Todo
-      class << self
-        # @return [Debtective::Todos::Todo]
-        def build(pathname, index)
-          Build.new(pathname, index).call
-        end
-      end
-
       attr_accessor :pathname, :todo_boundaries, :statement_boundaries
 
       # @param pathname [Pathname]
