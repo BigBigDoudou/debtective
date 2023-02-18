@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require "debtective/todo_list"
+require "debtective/todos/list"
 
-RSpec.describe Debtective::TodoList do
+RSpec.describe Debtective::Todos::List do
   describe "#call" do
-    subject(:todo_list) { described_class.new(["spec/dummy/app/**/*"]) }
+    subject(:todos_list) { described_class.new(["spec/dummy/app/**/*"]) }
 
     describe "#todos" do
       it "returns the location in the codebase" do
         expect(
-          todo_list.todos.map do |todo|
+          todos_list.todos.map do |todo|
             [
               todo.pathname.to_s,
               todo.todo_boundaries,
@@ -34,7 +34,7 @@ RSpec.describe Debtective::TodoList do
     describe "#authors" do
       it "returns the location in the codebase" do
         expect(
-          todo_list.authors.map do |author|
+          todos_list.authors.map do |author|
             [
               author.name,
               author.email,
@@ -67,13 +67,13 @@ RSpec.describe Debtective::TodoList do
 
     describe "extended_count" do
       it "returns the sum of todo blocks" do
-        expect(todo_list.extended_count).to eq 35
+        expect(todos_list.extended_count).to eq 35
       end
     end
 
     describe "combined_count" do
       it "returns the sum of todo blocks excluding overlaps" do
-        expect(todo_list.combined_count).to eq 24
+        expect(todos_list.combined_count).to eq 24
       end
     end
   end

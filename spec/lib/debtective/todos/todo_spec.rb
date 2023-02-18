@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "debtective/todo"
+require "debtective/todos/todo"
 
-RSpec.describe Debtective::Todo do
-  subject(:todo) do
+RSpec.describe Debtective::Todos::Todo do
+  subject(:todos_todo) do
     described_class.new(
       "foo.rb",
       Array.new(42, "") + ["#TODO: do that", "def example", "  x + y", "end"],
@@ -14,17 +14,17 @@ RSpec.describe Debtective::Todo do
 
   let(:commit) do
     instance_double(
-      Debtective::GitCommit,
-      call: Debtective::GitCommit::Commit.new(
+      Debtective::FindCommit,
+      call: Debtective::FindCommit::Commit.new(
         "1234",
-        Debtective::GitCommit::Author.new("jane.doe@mail.com", "Jane Doe"),
+        Debtective::FindCommit::Author.new("jane.doe@mail.com", "Jane Doe"),
         Time.new(2000)
       )
     )
   end
 
   before do
-    allow(Debtective::GitCommit)
+    allow(Debtective::FindCommit)
       .to receive(:new)
       .with("foo.rb", "#TODO: do that")
       .and_return(commit)
@@ -32,25 +32,25 @@ RSpec.describe Debtective::Todo do
 
   describe "#location" do
     it "returns the location in the codebase" do
-      expect(todo.location).to eq "foo.rb:43"
+      expect(todos_todo.location).to eq "foo.rb:43"
     end
   end
 
   describe "#size" do
     it "returns the size (lines count) of code concerned by the todo" do
-      expect(todo.size).to eq 3
+      expect(todos_todo.size).to eq 3
     end
   end
 
   describe "#days" do
     it "returns number of days since todo has been written" do
-      expect(todo.days).to be_an Integer
+      expect(todos_todo.days).to be_an Integer
     end
   end
 
   describe "#to_h" do
     it "returns an hash with todo information" do
-      expect(todo.to_h).to eq(
+      expect(todos_todo.to_h).to eq(
         {
           commit: {
             author: {

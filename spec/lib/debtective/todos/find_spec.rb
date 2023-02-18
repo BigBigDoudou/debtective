@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "debtective/find_todos"
+require "debtective/todos/find"
 
-RSpec.describe Debtective::FindTodos do
+RSpec.describe Debtective::Todos::Find do
   describe "#call" do
-    subject(:todos) { described_class.new(["spec/dummy/app/**/*"]).call }
+    subject(:todos_find) { described_class.new(["spec/dummy/app/**/*"]).call }
 
     it "returns todos" do
       expect(
-        todos.map { [_1.pathname.to_s, _1.todo_boundaries, _1.statement_boundaries] }
+        todos_find.map { [_1.pathname.to_s, _1.todo_boundaries, _1.statement_boundaries] }
       ).to match_array(
         [
           ["spec/dummy/app/models/user.rb", 2..2, 3..20],

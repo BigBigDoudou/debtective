@@ -5,7 +5,7 @@ require "open3"
 
 module Debtective
   # find the commit that introduced a line of code
-  class GitCommit
+  class FindCommit
     Author = Struct.new(:email, :name)
     Commit = Struct.new(:sha, :author, :time)
 
@@ -18,7 +18,7 @@ module Debtective
       @code = code
     end
 
-    # @return [Debtective::GitCommit::Commit]
+    # @return [Debtective::FindCommit::Commit]
     def call
       Commit.new(sha, author, time)
     rescue Git::GitExecuteError
@@ -26,7 +26,7 @@ module Debtective
       Commit.new(nil, author, nil)
     end
 
-    # @return [Debtective::GitCommit::Author]
+    # @return [Debtective::FindCommit::Author]
     def author
       Author.new(commit.author.email, commit.author.name)
     end
