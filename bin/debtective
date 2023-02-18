@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require "debtective"
-require "debtective/todos/output"
 
 user_name =
   if ARGV.include?("--me")
@@ -11,11 +10,14 @@ user_name =
     ARGV[ARGV.index("--user") + 1]
   end
 
-if user_name
-  puts "Searching TODOs from #{user_name}..."
-else
-  puts "Searching TODOs..."
-end
-
 quiet = ARGV.include?("--quiet")
-Debtective::Todos::Output.new(user_name, quiet: quiet).call
+
+case ARGV[0]
+when "--todos"
+  require "debtective/todos/output"
+  Debtective::Todos::Output.new(user_name, quiet: quiet).call
+when "--offenses", "--gems"
+  puts "Upcoming feature"
+else
+  puts "Please pass one of this options: [--todos, --offenses, --gems]"
+end

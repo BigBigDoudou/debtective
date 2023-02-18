@@ -22,6 +22,8 @@ module Debtective
         filter_list!
         log_counts
         update_json_file
+        return if @quiet
+
         puts FILE_PATH
       end
 
@@ -41,7 +43,7 @@ module Debtective
 
       # @return [void]
       def log_counts
-        @return if @quiet
+        return if @quiet
 
         puts "total: #{@list.todos.count}"
         puts "combined lines count: #{@list.combined_count}"
