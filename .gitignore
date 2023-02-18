@@ -18,5 +18,6 @@ coverage/*
 # builds
 debtective-*.gem
 
-# JSON output
+# JSON outputs
+offenses.json
 todos.json
