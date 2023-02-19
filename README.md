@@ -4,24 +4,25 @@ Find legacy code so you don't forget to pay off your debts! 💰
 
 ## Usage
 
-### Find TODOs
-
 Run it with:
 
 ```bash
-# find the TODOs comment
+# find the TODOs comment (# TODO: ...)
 bundle exec debtective --todos
+
+# find the disabling cop comment (# rubocop:disable .../...)
+bundle exec debtective --offenses
 ```
 
-It prints to stdout the TODOs and saves the list in `todos.json`.
+It prints to stdout the elements and saves the list in `todos.json`/`offenses.json`.
 
-To find only your TODOs, use the `--me` option:
+To find only your elements, use the `--me` option:
 
 ```bash
 bundle exec debtective --todos --me
 ```
 
-To find only a specific user TODOs, use the `--user` option:
+To find only a specific user elements, use the `--user` option:
 
 ```bash
 bundle exec debtective --todos --user "Jane Doe" 
@@ -38,13 +39,13 @@ bundle exec debtective --todos --quiet
 :warning: These features are under development.
 
 ```bash
-# find the disbaled offenses (# rubocop:disable ...)
-bundle exec debtective --offenses
+# find the outdated gems (not maintained anymore)
+bundle exec debtective --gems
 ```
 
 ```bash
-# find the outdated gems (not maintained anymore)
-bundle exec debtective --gems
+# list file extensions to search in
+bundle exec debtective --todos --rb --js
 ```
 
 ## Installation
