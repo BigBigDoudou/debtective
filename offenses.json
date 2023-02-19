@@ -4,12 +4,12 @@
     "location": "./spec/dummy/app/controllers/users_controller.rb:9",
     "index": 8,
     "commit": {
-      "sha": null,
+      "sha": "3e735bcee1408e8d113c188f63ec1cc7cea2042d",
       "author": {
-        "email": null,
-        "name": null
+        "email": "ed.piron@gmail.com",
+        "name": "Edouard Piron"
       },
-      "time": null
+      "time": "2023-02-18 22:36:08 +0100"
     }
   },
   {
@@ -17,12 +17,12 @@
     "location": "./spec/dummy/app/models/application_record.rb:4",
     "index": 3,
     "commit": {
-      "sha": null,
+      "sha": "3e735bcee1408e8d113c188f63ec1cc7cea2042d",
       "author": {
-        "email": null,
-        "name": null
+        "email": "ed.piron@gmail.com",
+        "name": "Edouard Piron"
       },
-      "time": null
+      "time": "2023-02-18 22:36:08 +0100"
     }
   },
   {
@@ -30,12 +30,12 @@
     "location": "./spec/dummy/app/models/user.rb:8",
     "index": 7,
     "commit": {
-      "sha": null,
+      "sha": "3e735bcee1408e8d113c188f63ec1cc7cea2042d",
       "author": {
-        "email": null,
-        "name": null
+        "email": "ed.piron@gmail.com",
+        "name": "Edouard Piron"
       },
-      "time": null
+      "time": "2023-02-18 22:36:08 +0100"
     }
   },
   {
@@ -43,12 +43,12 @@
     "location": "./spec/dummy/app/models/user.rb:16",
     "index": 15,
     "commit": {
-      "sha": null,
+      "sha": "3e735bcee1408e8d113c188f63ec1cc7cea2042d",
       "author": {
-        "email": null,
-        "name": null
+        "email": "ed.piron@gmail.com",
+        "name": "Edouard Piron"
       },
-      "time": null
+      "time": "2023-02-18 22:36:08 +0100"
     }
   }
 ]

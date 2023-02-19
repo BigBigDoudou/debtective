@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "json"
+require "debtective/print"
 
 module Debtective
-  class Output
+  class Export
     # @param user_name [String] git user email to filter
     # @param quiet [boolean]
     def initialize(user_name = nil, quiet: false)
@@ -13,7 +14,8 @@ module Debtective
 
     # @return [void]
     def call
-      @elements = (log_table unless @quiet) || find_elements
+      log_table unless @quiet
+      @elements ||= find_elements
       filter_elements!
       log_counts unless @quiet
       update_json_file

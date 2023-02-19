@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-require "debtective/todos/output"
+require "debtective/todos/export"
 
-RSpec.describe Debtective::Todos::Output do
+RSpec.describe Debtective::Todos::Export do
   describe ".call" do
-    subject(:todos_output) { described_class.new(user_name, quiet: quiet).call }
+    subject(:todos_export) { described_class.new(user_name, quiet: quiet).call }
 
     let(:user_name) { nil }
     let(:quiet) { false }
 
-    it "outputs the todos" do
+    it "exports the todos" do
       location = "spec/dummy/app/controllers/users_controller.rb:4"
       author = "Edouard Piron"
       days = "9"
       size = "6"
-      expect { todos_output }.to output(/#{location}\s+|\s#{author}\s+|\s#{days}\s+|\s#{size}\s+/).to_stdout
+      expect { todos_export }.to export(/#{location}\s+|\s#{author}\s+|\s#{days}\s+|\s#{size}\s+/).to_stdout
     end
 
-    it "outputs the counts" do
-      expect { todos_output }.to output(/total: 6/).to_stdout
+    it "exports the counts" do
+      expect { todos_export }.to export(/total: 6/).to_stdout
     end
   end
 end
