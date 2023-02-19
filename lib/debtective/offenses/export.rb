@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require "debtective/export"
-require "debtective/offenses/find"
+require "debtective/print"
+require "debtective/find"
+require "debtective/offenses/offense"
 
 module Debtective
   module Offenses
@@ -35,9 +37,15 @@ module Debtective
           columns: TABLE_COLUMNS,
           track: Debtective::Offenses::Offense,
           user_name: @user_name
-        ).call do
-          @elements = Debtective::Offenses::Find.new(paths).call
-        end
+        ).call { @elements = find_elements }
+      end
+
+      def find_elements
+        Debtective::Find.new(
+          paths,
+          /\s# rubocop:disable (.*)/,
+          ->(pathname, index, match) { Debtective::Offenses::Offense.new(pathname, index, match[1]) }
+        ).call
       end
     end
   end

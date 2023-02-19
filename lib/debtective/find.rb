@@ -6,8 +6,10 @@ module Debtective
   # Find in the codebase
   class Find
     # @param paths [Array<String>]
-    def initialize(paths)
+    def initialize(paths, regex, build)
       @paths = paths
+      @regex = regex
+      @build = build
     end
 
     # @return [Array<Debtective::Offenses::Offense>]
@@ -16,8 +18,6 @@ module Debtective
     end
 
     private
-
-    REGEX = //
 
     # @return [Array<Pathname>] only pathes to ruby files
     def ruby_pathnames
@@ -31,9 +31,9 @@ module Debtective
     # @return [Array<Debtective::Offenses::Offense>]
     def pathname_offenses(pathname)
       pathname.readlines.filter_map.with_index do |line, index|
-        next unless line =~ self.class::REGEX
+        next unless line =~ @regex
 
-        build(pathname, index, Regexp.last_match)
+        @build.call(pathname, index, Regexp.last_match)
       end
     end
   end

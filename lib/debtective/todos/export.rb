@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require "debtective/export"
-require "debtective/todos/find"
+require "debtective/print"
+require "debtective/find"
+require "debtective/todos/build"
+require "debtective/todos/todo"
 
 module Debtective
   module Todos
@@ -41,8 +44,16 @@ module Debtective
           track: Debtective::Todos::Todo,
           user_name: @user_name
         ).call do
-          @elements = Debtective::Todos::Find.new(paths).call
+          @elements = find_elements
         end
+      end
+
+      def find_elements
+        Debtective::Find.new(
+          paths,
+          /#\sTODO:/,
+          ->(pathname, index, _match) { Debtective::Todos::Build.new(pathname, index).call }
+        ).call
       end
 
       # @return [void]
