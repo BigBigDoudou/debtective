@@ -2,13 +2,12 @@
 
 require "debtective/export"
 require "debtective/print"
-require "debtective/find"
 require "debtective/todos/build"
 require "debtective/todos/todo"
 
 module Debtective
   module Todos
-    # Export todos
+    # Export todos in a JSON file
     class Export < Debtective::Export
       private
 
@@ -37,23 +36,27 @@ module Debtective
         )
       ].freeze
 
-      # @return [void]
+      # @return [Array<Debtective::Todos::Todo>]
       def log_table
         Debtective::Print.new(
           columns: TABLE_COLUMNS,
           track: Debtective::Todos::Todo,
           user_name: @user_name
-        ).call do
-          @elements = find_elements
-        end
+        ).call { find_elements }
       end
 
+      # @return [Array<Debtective::Todos::Todo>]
       def find_elements
-        Debtective::Find.new(
-          paths,
-          /#\sTODO:/,
-          ->(pathname, index, _match) { Debtective::Todos::Build.new(pathname, index).call }
-        ).call
+        pathnames.flat_map do |pathname|
+          pathname.readlines.filter_map.with_index do |line, index|
+            next unless line =~ /#\sTODO:/
+
+            Debtective::Todos::Build.new(
+              pathname: pathname,
+              index: index
+            ).call
+          end
+        end
       end
 
       # @return [void]

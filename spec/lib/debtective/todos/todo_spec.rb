@@ -5,10 +5,10 @@ require "debtective/todos/todo"
 RSpec.describe Debtective::Todos::Todo do
   subject(:todos_todo) do
     described_class.new(
-      "foo.rb",
-      Array.new(42, "") + ["#TODO: do that", "def example", "  x + y", "end"],
-      42..42,
-      43..45
+      pathname: "foo.rb",
+      lines: Array.new(42, "") + ["#TODO: do that", "def example", "  x + y", "end"],
+      todo_boundaries: 42..42,
+      statement_boundaries: 43..45
     )
   end
 
@@ -26,7 +26,7 @@ RSpec.describe Debtective::Todos::Todo do
   before do
     allow(Debtective::FindCommit)
       .to receive(:new)
-      .with("foo.rb", "#TODO: do that")
+      .with(pathname: "foo.rb", code_line: "#TODO: do that")
       .and_return(commit)
   end
 

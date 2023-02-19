@@ -6,8 +6,8 @@ RSpec.describe Debtective::FindCommit do
   describe "#call" do
     subject(:find_commit) do
       described_class.new(
-        "spec/dummy/app/models/user.rb",
-        "# TODO: use an STI"
+        pathname: "spec/dummy/app/models/user.rb",
+        code_line: "# TODO: use an STI"
       ).call
     end
 

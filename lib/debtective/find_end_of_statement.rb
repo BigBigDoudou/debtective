@@ -23,7 +23,7 @@ module Debtective
 
     # @param lines [Array<String>] lines of code
     # @param index [Integer] index of the statement first line
-    def initialize(lines, first_line_index)
+    def initialize(lines:, first_line_index:)
       @lines = lines
       @first_line_index = first_line_index
     end

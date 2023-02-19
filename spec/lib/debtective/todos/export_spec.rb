@@ -4,7 +4,7 @@ require "debtective/todos/export"
 
 RSpec.describe Debtective::Todos::Export do
   describe ".call" do
-    subject(:todos_export) { described_class.new(user_name, quiet: quiet).call }
+    subject(:todos_export) { described_class.new(user_name: user_name, quiet: quiet).call }
 
     let(:user_name) { nil }
     let(:quiet) { false }
@@ -14,11 +14,11 @@ RSpec.describe Debtective::Todos::Export do
       author = "Edouard Piron"
       days = "9"
       size = "6"
-      expect { todos_export }.to export(/#{location}\s+|\s#{author}\s+|\s#{days}\s+|\s#{size}\s+/).to_stdout
+      expect { todos_export }.to output(/#{location}\s+|\s#{author}\s+|\s#{days}\s+|\s#{size}\s+/).to_stdout
     end
 
     it "exports the counts" do
-      expect { todos_export }.to export(/total: 6/).to_stdout
+      expect { todos_export }.to output(/total: 6/).to_stdout
     end
   end
 end

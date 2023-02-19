@@ -12,7 +12,7 @@ module Debtective
       # @param lines [Array<String>]
       # @param todo_boundaries [Range]
       # @param statement_boundaries [Range]
-      def initialize(pathname, lines, todo_boundaries, statement_boundaries)
+      def initialize(pathname:, lines:, todo_boundaries:, statement_boundaries:)
         @pathname = pathname
         @lines = lines
         @todo_boundaries = todo_boundaries
@@ -32,9 +32,13 @@ module Debtective
       end
 
       # return commit that introduced the todo
-      # @return [Git::Object::Commit]
+      # @return [Debtective::FindCommit::Commit]
       def commit
-        @commit ||= Debtective::FindCommit.new(@pathname, @lines[@todo_boundaries.min]).call
+        @commit ||=
+          Debtective::FindCommit.new(
+            pathname: @pathname,
+            code_line: @lines[@todo_boundaries.min]
+          ).call
       end
 
       # @return [Integer]

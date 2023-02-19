@@ -16,7 +16,7 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of class end" do
-        expect(described_class.new(lines, 0).call).to eq 4
+        expect(described_class.new(lines: lines, first_line_index: 0).call).to eq 4
       end
     end
 
@@ -39,8 +39,8 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of method end" do
-        expect(described_class.new(lines, 1).call).to eq 4
-        expect(described_class.new(lines, 6).call).to eq 10
+        expect(described_class.new(lines: lines, first_line_index: 1).call).to eq 4
+        expect(described_class.new(lines: lines, first_line_index: 6).call).to eq 10
       end
     end
 
@@ -66,8 +66,8 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of block end" do
-        expect(described_class.new(lines, 2).call).to eq 6
-        expect(described_class.new(lines, 10).call).to eq 12
+        expect(described_class.new(lines: lines, first_line_index: 2).call).to eq 6
+        expect(described_class.new(lines: lines, first_line_index: 10).call).to eq 12
       end
     end
 
@@ -94,9 +94,9 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 2).call).to eq 4
-        expect(described_class.new(lines, 6).call).to eq 8
-        expect(described_class.new(lines, 10).call).to eq 13
+        expect(described_class.new(lines: lines, first_line_index: 2).call).to eq 4
+        expect(described_class.new(lines: lines, first_line_index: 6).call).to eq 8
+        expect(described_class.new(lines: lines, first_line_index: 10).call).to eq 13
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 2).call).to eq 8
+        expect(described_class.new(lines: lines, first_line_index: 2).call).to eq 8
       end
     end
 
@@ -143,8 +143,8 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 2).call).to eq 5
-        expect(described_class.new(lines, 7).call).to eq 11
+        expect(described_class.new(lines: lines, first_line_index: 2).call).to eq 5
+        expect(described_class.new(lines: lines, first_line_index: 7).call).to eq 11
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 2).call).to eq 4
+        expect(described_class.new(lines: lines, first_line_index: 2).call).to eq 4
       end
     end
 
@@ -182,7 +182,7 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 2).call).to eq 5
+        expect(described_class.new(lines: lines, first_line_index: 2).call).to eq 5
       end
     end
 
@@ -199,8 +199,8 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 1).call).to eq 1
-        expect(described_class.new(lines, 3).call).to eq 3
+        expect(described_class.new(lines: lines, first_line_index: 1).call).to eq 1
+        expect(described_class.new(lines: lines, first_line_index: 3).call).to eq 3
       end
     end
 
@@ -222,8 +222,8 @@ RSpec.describe Debtective::FindEndOfStatement do
       end
 
       it "returns index of statement end" do
-        expect(described_class.new(lines, 3).call).to eq 3
-        expect(described_class.new(lines, 6).call).to eq 6
+        expect(described_class.new(lines: lines, first_line_index: 3).call).to eq 3
+        expect(described_class.new(lines: lines, first_line_index: 6).call).to eq 6
       end
     end
   end

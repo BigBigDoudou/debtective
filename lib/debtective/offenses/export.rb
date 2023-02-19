@@ -2,12 +2,11 @@
 
 require "debtective/export"
 require "debtective/print"
-require "debtective/find"
 require "debtective/offenses/offense"
 
 module Debtective
   module Offenses
-    # Export offenses
+    # Export offenses in a JSON file
     class Export < Debtective::Export
       private
 
@@ -31,21 +30,28 @@ module Debtective
         )
       ].freeze
 
-      # @return [void]
+      # @return [Array<Debtective::Offenses::Offense>]
       def log_table
         Debtective::Print.new(
           columns: TABLE_COLUMNS,
           track: Debtective::Offenses::Offense,
           user_name: @user_name
-        ).call { @elements = find_elements }
+        ).call { find_elements }
       end
 
+      # @return [Array<Debtective::Offenses::Offense>]
       def find_elements
-        Debtective::Find.new(
-          paths,
-          /\s# rubocop:disable (.*)/,
-          ->(pathname, index, match) { Debtective::Offenses::Offense.new(pathname, index, match[1]) }
-        ).call
+        pathnames.flat_map do |pathname|
+          pathname.readlines.filter_map.with_index do |line, index|
+            next unless line =~ /\s# rubocop:disable (.*)/
+
+            Debtective::Offenses::Offense.new(
+              pathname: pathname,
+              index: index,
+              cop: Regexp.last_match[1]
+            )
+          end
+        end
       end
     end
   end

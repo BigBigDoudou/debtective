@@ -4,7 +4,7 @@ require "git"
 require "open3"
 
 module Debtective
-  # find the commit that introduced a line of code
+  # Find the commit that introduced the given line of code
   class FindCommit
     Author = Struct.new(:email, :name)
     Commit = Struct.new(:sha, :author, :time)
@@ -12,10 +12,10 @@ module Debtective
     SPECIAL_CHARACTER_REGEX = /(?!\w|\s|#|:).+/
 
     # @param pathname [Pathname] file path
-    # @param code [String] line of code
-    def initialize(pathname, code)
+    # @param code_line [String] line of code_line
+    def initialize(pathname:, code_line:)
       @pathname = pathname
-      @code = code
+      @code_line = code_line
     end
 
     # @return [Debtective::FindCommit::Commit]
@@ -36,17 +36,6 @@ module Debtective
       commit.date
     end
 
-    # @return [Git::Base]
-    def git
-      Git.open(".")
-    end
-
-    # @return [Git::Object::Commit]
-    def commit
-      git.gcommit(sha)
-    end
-
-    # commit sha
     # @return [String]
     def sha
       @sha ||=
@@ -57,10 +46,22 @@ module Debtective
         end
     end
 
+    private
+
+    # @return [Git::Base]
+    def git
+      Git.open(".")
+    end
+
+    # @return [Git::Object::Commit]
+    def commit
+      git.gcommit(sha)
+    end
+
     # characters " and ` can break the git command
     # @return [String]
     def safe_code
-      @code.gsub(/"/, "\\\"").gsub("`", "\\\\`")
+      @code_line.gsub(/"/, "\\\"").gsub("`", "\\\\`")
     end
   end
 end

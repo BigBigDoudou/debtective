@@ -10,7 +10,7 @@ module Debtective
 
       # @param pathname [Pathname]
       # @param cop [Array<String>]
-      def initialize(pathname, index, cop)
+      def initialize(pathname:, index:, cop:)
         @pathname = pathname
         @index = index
         @cop = cop
@@ -23,9 +23,13 @@ module Debtective
       end
 
       # return commit that introduced the offense
-      # @return [Git::Object::Commit]
+      # @return [Debtective::FindCommit::Commit]
       def commit
-        @commit ||= Debtective::FindCommit.new(@pathname, @pathname.readlines[@index]).call
+        @commit ||=
+          Debtective::FindCommit.new(
+            pathname: @pathname,
+            code_line: @pathname.readlines[@index]
+          ).call
       end
 
       # @return [Integer]

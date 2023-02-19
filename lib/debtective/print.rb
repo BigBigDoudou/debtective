@@ -5,22 +5,25 @@ module Debtective
   class Print
     Column = Struct.new(:name, :format, :lambda)
 
-    # @param user_name [String] git user email to filter
+    # @param columns [Array<Debtective::Print::Column>]
+    # @param track [Class]
+    # @param user_name [String] git user name to filter
     def initialize(columns:, track:, user_name: nil)
       @columns = columns
       @track = track
       @user_name = user_name
     end
 
-    # @return [Debtective::Offenses::List]
+    # @return [Array]
     def call
       puts separator
       puts headers_row
       puts separator
       trace.enable
-      yield
+      result = yield
       trace.disable
       puts separator
+      result
     end
 
     private
@@ -36,12 +39,14 @@ module Debtective
       end
     end
 
+    # @return [String]
     def headers_row
       @columns.map do |column|
         format(column.format, column.name)
       end.join(" | ")
     end
 
+    # @return [String]
     def object_row(object)
       @columns.map do |column|
         format(column.format, column.lambda.call(object))
