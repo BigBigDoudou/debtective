@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    debtective (0.2.3.4)
+    debtective (0.2.3.5)
       git
+      parser
 
 GEM
   remote: https://rubygems.org/

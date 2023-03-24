@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "debtective/find_end_of_statement"
+require "debtective/comments/find_end_of_statement"
 
-RSpec.describe Debtective::FindEndOfStatement do
+RSpec.describe Debtective::Comments::FindEndOfStatement do
   describe "#call" do
     context "with a class" do
       let(:lines) do
