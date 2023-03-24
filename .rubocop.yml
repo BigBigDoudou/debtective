@@ -77,7 +77,7 @@ Style/Documentation:
 # Checks for missing documentation comment for public methods.
 Style/DocumentationMethod:
   Enabled: true
-  RequireForNonPublicMethods: true
+  RequireForNonPublicMethods: false
   Exclude:
     - 'spec/**/*'
     - 'db/migrate/*'

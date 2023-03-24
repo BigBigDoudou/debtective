@@ -19,5 +19,4 @@ coverage/*
 debtective-*.gem
 
 # JSON exports
-offenses.json
-todos.json
+comments.json

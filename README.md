@@ -4,49 +4,79 @@ Find legacy code so you don't forget to pay off your debts! 💰
 
 ## Usage
 
+### #️⃣ Comments
+
+Globally, comments are a good clue to find smelly code that could be rewritten to become understandable without comments.
+
+Morehover, TODO and FIXME comments indicate a debt that needs to be paid off.
+
 Run it with:
 
 ```bash
-# find the TODOs comment (# TODO: ...)
-bundle exec debtective --todos
-
-# find the disabling cop comment (# rubocop:disable .../...)
-bundle exec debtective --offenses
+bundle exec debtective --comments
 ```
 
-It prints to stdout the elements and saves the list in `todos.json`/`offenses.json`.
+This outputs the comment in the stdout and in a `comments.json` file, with useful information like the author and date, the type, the size of related statement, etc.
 
-To find only your elements, use the `--me` option:
+If you're interested only in the `comments.json` file, pass the `--quiet` option so nothing is logged to stdout.
+
+You can filter comments by paths:
 
 ```bash
-bundle exec debtective --todos --me
+# find only comments in app/models and app/controllers
+# excepting those in app/models/concerns and app/controllers/concerns
+bundle exec debtective --comments \
+  --include app/models app/controllers \
+  --exclude app/models/concerns app/controllers/concerns
 ```
 
-To find only a specific user elements, use the `--user` option:
+You can filter comments by author:
 
 ```bash
-bundle exec debtective --todos --user "Jane Doe" 
+# find only your comments (rely on local git configuration)
+bundle exec debtective --comments --me
+
+# find only Jane Doe's comments
+bundle exec debtective --comments --user "Jane Doe"
 ```
 
-To silence all outputs and only build the JSON file, use the `--quiet` option:
+You can filter comments by type:
+
+| type | example |
+| --- | --- |
+| `todo` | `# TODO: do that` |
+| `fixme` | `# FIXME: do that` |
+| `yard` | `# @return Float` |
+| `offense` | `# rubocop:disable Metrics/MethodLength` |
+| `magic` | `# frozen_string_literal: true` |
+| `shebang` | `#!/usr/bin/env ruby` |
+| `note` | `# hello world` (any other comment) |
+
+Use `--<type>` to include a type or `--no-<type>` to exclude a type:
 
 ```bash
-bundle exec debtective --todos --quiet
+# find only todo and fixme comments
+bundle exec debtective --comments --todo --fixme
+
+# find all comments excepting magic and shebang
+bundle exec debtective --comments --no-magic --no-shebang
 ```
 
-### Upcoming features
-
-:warning: These features are under development.
+Of course all options can be comined together:
 
 ```bash
-# find the outdated gems (not maintained anymore)
-bundle exec debtective --gems
+# find only your todo and fixme comments in app/models and app/controllers
+# excepting those in app/models/concerns and app/controllers/concerns
+bundle exec debtective --comments --me --todo --fixme \
+  --include app/models app/controllers \
+  --exclude app/models/concerns app/controllers/concerns
 ```
 
-```bash
-# list file extensions to search in
-bundle exec debtective --todos --rb --js
-```
+### 💎 Gems
+
+Find gems that are not maintained anymore.
+
+:warning: Upcoming feature!
 
 ## Installation
 
@@ -68,16 +98,6 @@ Or install it yourself as:
 
 ```bash
 $ gem install debtective
-```
-
-Configure the paths that should be analyzed (all by default):
-
-```ruby
-# config/initializers/debtective.rb
-
-Debtective.configure do |config|
-  config.paths = ["app/**/*", "lib/**/*"]
-end
 ```
 
 ## Contributing

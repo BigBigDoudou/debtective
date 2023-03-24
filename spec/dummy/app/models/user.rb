@@ -4,6 +4,7 @@
 class User < ApplicationRecord
   # TODO: extract in a service
   # since it is a lot of logic
+  # @return [Integer]
   def compute
     x + y # rubocop:disable Layout/ExtraSpacing
   end
