@@ -6,9 +6,9 @@ Find legacy code so you don't forget to pay off your debts! 💰
 
 ### #️⃣ Comments
 
-Globally, comments are a good clue to find smelly code that could be rewritten to become understandable without comments.
+Overall, comments are a good clue to find smelly code that could be rewritten to become understandable without comments.
 
-Morehover, TODO and FIXME comments indicate a debt that needs to be paid off.
+Morehover, TODO and FIXME comments indicate a debt that needs to be repaid.
 
 Run it with:
 
@@ -16,11 +16,11 @@ Run it with:
 bundle exec debtective --comments
 ```
 
-This outputs the comment in the stdout and in a `comments.json` file, with useful information like the author and date, the type, the size of related statement, etc.
+This outputs the comments in the stdout and in a `comments.json` file, with useful information such as<<>> author and date, type, size of the associated statement, etc.
 
-If you're interested only in the `comments.json` file, pass the `--quiet` option so nothing is logged to stdout.
+If you are only interested in the `comments.json` file, pass the `--quiet` option so that nothing is logged to stdout.
 
-You can filter comments by paths:
+You can filter comments by including and excluding paths:
 
 ```bash
 # find only comments in app/models and app/controllers
@@ -58,7 +58,7 @@ Use `--<type>` to include a type or `--no-<type>` to exclude a type:
 # find only todo and fixme comments
 bundle exec debtective --comments --todo --fixme
 
-# find all comments excepting magic and shebang
+# find all comments except magic and shebang ones
 bundle exec debtective --comments --no-magic --no-shebang
 ```
 
@@ -66,7 +66,7 @@ Of course all options can be comined together:
 
 ```bash
 # find only your todo and fixme comments in app/models and app/controllers
-# excepting those in app/models/concerns and app/controllers/concerns
+# except those in app/models/concerns and app/controllers/concerns
 bundle exec debtective --comments --me --todo --fixme \
   --include app/models app/controllers \
   --exclude app/models/concerns app/controllers/concerns
