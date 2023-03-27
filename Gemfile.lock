@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    debtective (0.2.3.5)
+    debtective (0.2.3.6)
       git
       parser
 
